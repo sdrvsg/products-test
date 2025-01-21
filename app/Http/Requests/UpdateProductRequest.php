@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ProductStatus;
 use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UpdateProductRequest extends FormRequest
 {
@@ -12,11 +15,14 @@ class UpdateProductRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+    public function rules(Request $request): array
     {
+        $product = $request->route('product');
         return [
             'name' => ['required', 'min:10'],
-            'article' => ['required', 'alpha_num:ascii', 'unique:' . Product::class . ',article'],
+            'article' => ['required', 'alpha_num:ascii', Rule::unique(Product::class)->ignore($product)],
+            'status' => ['required', Rule::enum(ProductStatus::class)],
+            'data' => ['nullable', 'array'],
         ];
     }
 }

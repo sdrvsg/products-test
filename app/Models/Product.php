@@ -26,6 +26,13 @@ class Product extends Model
     /** @use HasFactory<ProductFactory> */
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'article',
+        'name',
+        'status',
+        'data',
+    ];
+
     public function casts(): array
     {
         return [
