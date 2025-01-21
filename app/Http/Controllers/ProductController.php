@@ -20,6 +20,9 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, Product $product): RedirectResponse
     {
+        if (!$this->productsService->canChangeArticle($request, $product))
+            return back()->withErrors(['article' => 'You cant change the article']);
+
         $this->productsService->update($product, $request->validated());
         return redirect()->route('products.show', $product);
     }
