@@ -13,6 +13,11 @@ class ProductsService
         return Product::query()->available()->get();
     }
 
+    public function getLatest(): Product
+    {
+        return Product::query()->latest('id')->withTrashed()->first();
+    }
+
     public function store(array $attributes): void
     {
         Product::query()->create($attributes);
